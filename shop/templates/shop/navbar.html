@@ -1,0 +1,77 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <span class="navbar-brand">ShopName</span>
+    <img src="{% static 'photo/logo.svg' %}" alt="" width="42" height="42">
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'base_view' %}">
+                    Главная</a>
+            </li>
+
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown01"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Гаджеты
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdown01">
+
+                    {% for category in categories %}
+                    <a class="dropdown-item" href="{% url 'category_view' category.name %}">
+                        {{ category }}
+                    </a>
+                    {% endfor %}
+
+                </div>
+            </li>
+
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'empty_view' %}">
+                    Аксесcуары</a>
+            </li>
+
+
+        </ul>
+        <div style="padding-right: 20px; color: white">
+            {% if user.is_authenticated %}
+            Привет {{ user }}
+            {% else %}
+            Привет гость
+            {% endif %}
+
+        </div>
+
+        {% if user.is_authenticated %}
+        <a class="btn btn-outline-success my-2 my-sm-0" role="button"
+           href="{% url 'cart' user_name=user %}">
+            Корзина
+        </a>
+
+        <a class="btn btn-outline-success my-2 my-sm-0" role="button"
+           href="{% url 'login' %}">
+            Выйти
+        </a>
+        {% else %}
+        <a class="btn btn-outline-success my-2 my-sm-0" role="button"
+           href="{% url 'empty_view' %}">
+            Корзина
+        </a>
+
+        <a class="btn btn-outline-success my-2 my-sm-0" role="button"
+           href="{% url 'login' %}">
+            Войти
+        </a>
+        {% endif %}
+
+
+    </div>
+</nav>

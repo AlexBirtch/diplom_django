@@ -1,0 +1,67 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+{% load star_filter_tags %}
+
+
+{% block content %}
+<main role="main">
+
+    <div class="container mt-3">
+        <!-- Example row of columns -->
+        <div class="row">
+            <div class="col-md-12">
+                <h2>{{ item.name }}</h2>
+
+                <img src="{{ item.image.url }}" width="120">
+
+                <p>{{ item.description }}</p>
+                {% if user.is_authenticated %}
+                <form method="post" action="{% url 'add_item_to_cart' item_id=item.id user=user_session %}">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-secondary" value="Добавить в корзину »">
+                </form>
+                {% else %}
+                <form method="post" action="{% url 'not_authenticated_user' %}">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-secondary" value="Добавить в корзину »">
+                </form>
+                {% endif %}
+
+            </div>
+        </div>
+        <hr>
+
+        <!--    блок вывода количества звезд и отзывов-->
+        {% if item.reviews.count > 0 %}
+        {% for review in item.reviews.all %}
+        {{ review.star|get_stars }} {{ review.name }}<br>
+        {{ review.text }}<br><br>
+        {% endfor %}
+        {% else %}
+        <p>Пока нет ни одного отзыва!</p>
+        {% endif %}
+        <!--  конец блока  -->
+        <hr>
+
+        <div class="row">
+            <div class="col-lg-6 col-md-8 col-sm-12">
+                {% if not reviewd %}
+                <h4>Оставте отзыв:</h4>
+
+                <form action="{% url 'item_view' item_id=item.id %}" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Оставить</button>
+                </form>
+                {% else %}
+                <h4>Вы оставили отзыв к данному товару</h4>
+                {% endif %}
+
+            </div>
+        </div>
+
+    </div> <!-- /container -->
+
+</main>
+
+{% endblock %}
