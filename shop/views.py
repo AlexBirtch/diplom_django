@@ -21,11 +21,10 @@ def get_session_id(request):
 def base_view(request):
     phones = Item.objects.filter(category=1)[:3]
     wear = Item.objects.filter(category=2)[:3]
-    categories = Category.objects.all()
+#    categories = Category.objects.all()
     context = {
                 'phones': phones,
                 'wear': wear,
-                'categories': categories,
                 'user_session': get_session_id(request)}
     return render(request, 'shop/index.html', context)
 
@@ -137,8 +136,7 @@ def category_view(request, category_name):
 
 '''пустая страница'''
 def empty_view(request):
-    categories = Category.objects.all()
-    context = {'categories': categories,
-               'user_session': get_session_id(request)}
+#    categories = Category.objects.all()
+    context = {'user_session': get_session_id(request)}
     template = 'shop/empty_section.html'
     return render(request, template, context)
