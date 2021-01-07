@@ -21,7 +21,6 @@ def get_session_id(request):
 def base_view(request):
     phones = Item.objects.filter(category=1)[:3]
     wear = Item.objects.filter(category=2)[:3]
-#    categories = Category.objects.all()
     context = {
                 'phones': phones,
                 'wear': wear,
@@ -41,7 +40,8 @@ def item_view(request, item_id):
     context = {'item': item,
                'form': form,
                'user_session': get_session_id(request),
-               'categories': Category.objects.all()}
+
+               }
 
     # отображение отзывов, если они есть
     for review in item.reviews.all():
@@ -129,14 +129,13 @@ def category_view(request, category_name):
                'current_page': current_page,
                'prev_page_url': prev_page,
                'next_page_url': next_page,
-               'categories': Category.objects.all()}
+               }
 
     return render(request, template, context)
 
 
 '''пустая страница'''
 def empty_view(request):
-#    categories = Category.objects.all()
     context = {'user_session': get_session_id(request)}
     template = 'shop/empty_section.html'
     return render(request, template, context)
